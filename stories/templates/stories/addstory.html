@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <title>Add Story</title>
+
+    </head>
+    <body>
+        <h1>ADD STORY</h1>
+        <form id="add_story" method="post" >
+            {% csrf_token %}
+            <div>
+              <label>title</label>
+              <label>
+                <input type="text" name="title" value="" size="100" required>
+              </label>
+            </div>
+
+            <div>
+              <label>Source</label>
+              <select name="source">
+                {% for source in source_qs %}
+                  <option value="{{ source.id }}">{{ source.name }}</option>
+                {% endfor %}
+              </select>
+
+            </div>
+
+            <div>
+              <label>Published Date</label>
+              <label>
+               <input type="date" name="pub_date" placeholder="YYYY-MM-DD" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" title="Enter a date in this formart YYYY-MM-DD"/>
+              </label>
+            </div>
+
+            <div>
+              <label>Body Text</label>
+              <label>
+                <textarea  rows="4" cols="50" name="body_text"></textarea>
+              </label>
+            </div>
+
+            <div>
+              <label>URL</label>
+              <label>
+                <input type="url" value="" name="url" size="150">
+              </label>
+            </div>
+
+          <div>
+            <label>Companies</label>
+            <select multiple="multiple" name="companies">
+              {% for company in company_qs %}
+                <option value="{{ company.id }}">{{ company.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+           <div>
+            <label>Client</label>
+            <select  name="client">
+              {% for client in company_qs %}
+                <option value="{{ client.id }}">{{ client.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div>
+            <input type="submit" value="submit">
+          </div>
+
+
+        </form>
+    </body>
+
+</html>

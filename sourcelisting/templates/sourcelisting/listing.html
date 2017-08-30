@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>Source Listing Page</title>
+  </head>
+
+  <body style="margin: 150px; display: inline-block; border:1px dashed blue;">
+    <div style="width: 900px">
+      <div>
+        <span style="margin: 10px; width: 170px; display: inline-block;">
+          <input type="text" id="myInput"  placeholder="Search for names.." >
+        </span>
+        <span style="margin: 10px; width: 250px; display: inline-block">
+          <a href="/page/search/document.getElementById('myInput').value" >GO</a>
+        </span>
+
+
+        <span style="margin: 10px; width: 180px; display: inline-block;">
+          <a href="/page/add" style="color: brown"><h3>Add New Source</h3></a>
+        </span>
+
+        <span style="margin: 10px; width: 200px; display: inline-block;">
+          <a href="/" >FETCH STORIES</a>
+        </span>
+      </div>
+
+      <div>
+          {% for i in qs %}
+           <div style="border:1px solid black; height:50px;">
+              <span style="margin: 10px; width: 150px; display: inline-block;">{{ i.name }}</span>
+
+              <span style="margin: 10px; width: 400px; display: inline-block;">
+                <a href="{{ i.url }}">{{ i.url }}</a>
+              </span>
+
+              <span style="margin: 10px; width: 80px; display: inline-block;">
+                <a href="/page/edit/{{ i.id }}" style="color: brown">Edit</a>
+              </span>
+
+              <span style="margin: 10px; width: 80px; display: inline-block;">
+                <a href="/page/delete/{{ i.id }}" >Delete</a>
+              </span>
+
+              <span style="margin: 10px; width: 5px; display: inline-block">
+                <a href="/page/fetch_stories/{{ i.id }}">Fetch</a>
+              </span>
+           </div>
+          {% endfor %}
+      </div>
+    </div>
+  </body>
+</html>

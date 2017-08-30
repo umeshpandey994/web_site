@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>Log In</title>
+    </head>
+    <body>
+        <h1>ADD SOURCE</h1>
+        <form id="add_source" method="post" >
+            {% csrf_token %}
+            <div>
+            <div>
+              <label>Name:</label>
+              <label>
+                <input type="text" name="name" value="{{ qs.name }}" size="20" required>
+              </label>
+            </div>
+
+            <div>
+              <label>URL:</label>
+              <label>
+                <input type="url" name="url" value="{{ qs.url }}" size="20" required>
+              </label>
+            </div>
+
+            <div>
+              <label>
+                   <input type="submit" value="save">
+              </label>
+            </div>
+            </div>
+        </form>
+    </body>
+</html>
