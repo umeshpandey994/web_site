@@ -2,7 +2,6 @@
   <head>
     <title>Sign Up</title>
   </head>
-
   <body>
     <div>
       <h1>Sign Up</h1>
@@ -17,11 +16,8 @@
       <span style="color: red">{{ error1 }}</span>
     {% endif %}
     </div>
-
-
     <form id="user_signup" method="post">
       {% csrf_token %}
-
       <div>
         <label>Username:</label>
         <label>
@@ -29,7 +25,6 @@
                  pattern="^[a-zA-Z0-9_]{3,}$"
                  title="UserName Contains minimum 3 letters and numbers " required="required">
                   <small class="error" >Required Field</small>
-
         </label>
       </div>
       <br>
@@ -50,28 +45,28 @@
                  required>
         </label>
       </div>
-      <br>
+
       <div>
         <label>Email:</label>
         <label>
           <input type="email" name="email" value="" maxlength="255" required>
         </label>
       </div>
-      <br>
+
       <div>
         <label>Password:</label>
         <label>
           <input type="password" name="password" value="" minlength="3" required>
         </label>
       </div>
-      <br>
+
       <div>
         <label>Confirm Password:</label>
         <label>
           <input type="password" name="confirm_password" value="" minlength="3" required>
         </label>
       </div>
-      <br>
+
       <div>
         <label for="id_company">Company:</label>
         <select name="company" required id="id_company">
@@ -80,7 +75,7 @@
           {% endfor %}
         </select>
       </div>
-      <br>
+
       <div>
         <label for="id_client">Client:</label>
         <select name="client" required id="id_company">
@@ -97,15 +92,6 @@
           <input type="radio" name="gender" value="female">Female
         </label>
       </div>
-{##}
-{#       <div>#}
-{#        <label>Hobbies</label>#}
-{#         <input type="checkbox" name="hobbies" value="playing">Playing#}
-{#         <input type="checkbox" name="hobbies" value="singing">Singing#}
-{#          <input type="checkbox" name="hobbies" value="dancing">Dancing#}
-{#          <input type="checkbox" name="hobbies" value="swimming">swimming#}
-{#          <input type="checkbox" name="hobbies" value="travelling">Travelling#}
-{#       </div>#}
 
       <div>
         <label>

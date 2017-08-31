@@ -1,7 +1,6 @@
 <html>
     <head>
         <title>Add Story</title>
-
     </head>
     <body>
         <h1>ADD STORY</h1>
@@ -21,7 +20,6 @@
                   <option value="{{ source.id }}">{{ source.name }}</option>
                 {% endfor %}
               </select>
-
             </div>
 
             <div>
@@ -45,30 +43,17 @@
               </label>
             </div>
 
-          <div>
-            <label>Companies</label>
-            <select multiple="multiple" name="companies">
-              {% for company in company_qs %}
-                <option value="{{ company.id }}">{{ company.name }}</option>
-              {% endfor %}
-            </select>
-          </div>
-
-           <div>
-            <label>Client</label>
-            <select  name="client">
-              {% for client in company_qs %}
-                <option value="{{ client.id }}">{{ client.name }}</option>
-              {% endfor %}
-            </select>
-          </div>
-
+            <div>
+              <label>Companies</label>
+              <select multiple="multiple" name="companies">
+                {% for company in company_qs %}
+                  <option value="{{ company.id }}">{{ company.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
           <div>
             <input type="submit" value="submit">
           </div>
-
-
         </form>
     </body>
-
 </html>

@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
 
-from datetime import datetime
 from dateutil.parser import parse
 
 from sourcelisting.models import Source
@@ -93,7 +92,9 @@ def fetch_stories(request, id):
         return HttpResponse("data not saved into db")
 
 
-
+def listing(request):
+    qs = Source.objects.filter(created_by=request.user.id)
+    return render(request, "sourcelisting/listing.html", {'qs': qs})
 
 
 

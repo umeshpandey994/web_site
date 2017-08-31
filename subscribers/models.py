@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 
 class Company(models.Model):
@@ -25,7 +25,6 @@ class Subscriber(models.Model):
 
     company = models.ForeignKey(Company, related_name='company_name')
     client = models.ForeignKey(Company, related_name='client_name')
-    #gender = models.IntegerField(max_length=1, null=True)
     hobbies = models.CharField(max_length=100, null=True)
     created_on = models.DateTimeField(auto_now_add=True, null=True)
     updated_on = models.DateTimeField(auto_now=True, null=True)

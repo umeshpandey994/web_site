@@ -1,7 +1,6 @@
 <html>
     <head>
         <title>Log In</title>
-
     </head>
     <body>
         <h1>Log In</h1>
@@ -10,7 +9,7 @@
             <span style="color: red">{{ error }}</span>
           {% endif %}
         </div>
-        <form id="user_login" method="post" >
+        <form id="login" method="post" >
             {% csrf_token %}
             <div>
               <label>UserName:</label>
@@ -19,7 +18,6 @@
               </label>
             </div>
 
-            <br>
             <div>
               <label>Password:</label>
               <label>
@@ -38,5 +36,4 @@
             </div>
         </form>
     </body>
-
 </html>

@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'sourcelisting',
     'stories',
     'django_feedparser',
-    'testapp',
+
 
 
 

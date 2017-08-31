@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render, render_to_response
+
 from django.contrib.auth import authenticate,login
-from django.views.decorators.csrf import csrf_protect, csrf_exempt
-from django.http import HttpResponse,HttpResponseRedirect
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.db import DatabaseError
-from django.core.exceptions import ValidationError
+from django.http import HttpResponse,HttpResponseRedirect
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
+from stories.models import Story
 from subscribers.models import Company,Subscriber
-from sourcelisting.models import Source
 
 
 @csrf_protect
@@ -70,7 +71,7 @@ def signup(request):
 
 
 @csrf_exempt
-def user_login(request):
+def login_(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -78,9 +79,12 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                qs = Source.objects.filter(created_by=user.id)
+                #qs = Source.objects.filter(created_by=user.id)
+                sub = Subscriber.objects.get(user_id=user.id)
+                client = sub.client_id
+                qs = Story.objects.filter(client=client)
                 if qs.exists():
-                    return render(request, "sourcelisting/listing.html",
+                    return render(request, "stories/showstories.html",
                                   {'qs': qs}
                                   )
                 else:
@@ -94,7 +98,3 @@ def user_login(request):
             return render(request, 'subscribers/login.html', cxt)
     else:
         return render(request, 'subscribers/login.html')
-
-
-def some_view(request):
-    return HttpResponse("sucessfully log in")

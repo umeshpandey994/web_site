@@ -2,24 +2,54 @@
   <head>
     <title>SHOW STORIES</title>
   </head>
-  <body>
-    <div>
+  <body style="margin: 100px; display: inline-block; border: 1px solid black">
+    <div style="width: 1000px;">
       <div>
-        <span>
+        <span style="margin: 10px; width: 450px; display: inline-block">
           <input type="text" placeholder="search by names">
         </span>
 
-        <span>
-          <a href="">Add A Story</a>
+        <span style="margin: 10px; width:200px; display: inline-block">
+          <a href="/page/addstory">Add A Story</a>
         </span>
 
-        <span>
-          <a href="">View Source</a>
+        <span style="margin: 10px; width: 150px; display: inline-block">
+          <a href="/page/listing">View Source</a>
         </span>
       </div>
-
       <div>
-        <span></span>
+        {% for i in qs %}
+          <div style="border: 1px solid black; height: 170px;">
+            <span style="margin: 10px; width: 300px; display: inline-block">
+              <a href="{{ i.url }}">{{ i.title }}</a>
+            </span>
+
+            <span style="margin: 10px; width: 150px; display: inline-block">
+              {{ i.source.name }}
+            </span>
+
+            <span style="margin: 10px; width: 150px; display: inline-block">
+              {{ i.company.values_list}}
+            </span>
+
+            <span style="margin: 10px; width: 150px; display: inline-block">
+              {{ i.pub_date }}
+
+            </span>
+
+            <span style="margin: 10px; width: 600px; display: inline-block">
+              {{ i.body_text }}
+            </span>
+
+            <span style="margin: 30px; width: 150px; display: inline-block">
+              <a href="">Edit</a>
+            </span>
+
+            <span style="margin: 10px; width: 100px; display: inline-block" >
+              <a href="">Delete</a>
+            </span>
+          </div>
+        {% endfor %}
       </div>
     </div>
   </body>
