@@ -12,6 +12,12 @@ from subscribers.models import Company,Subscriber
 from stories.models import Story
 
 import feedparser
+import re
+
+
+def filterstring(data):
+    p = re.compile(r'<.+>')
+    return p.sub('', data)
 
 
 def add(request):
@@ -75,14 +81,14 @@ def fetch_stories(request, id):
                                                         dt.day, dt.hour,
                                                         dt.minute, dt.second
                                                         )
-                s.body_text = entry.summary
+                s.body_text = filterstring(entry.summary)
                 s.source_id = id
                 qs2 = Subscriber.objects.get(user_id=qs1.created_by_id)
                 s.client_id = qs2.client_id
                 try:
                     s.save()
-                except:
-                     pass
+                except ValueError:
+                    return HttpResponse("Data is Not Saved into Database")
                 list_companies = qs1.companies.values_list('id', flat=True)
                 story_obj = Story.objects.get(id=s.id)
                 for i in list_companies:

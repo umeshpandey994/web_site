@@ -5,11 +5,22 @@
   <body style="margin: 100px; display: inline-block; border: 1px solid black">
     <div style="width: 1000px;">
       <div>
-        <span style="margin: 10px; width: 450px; display: inline-block">
-          <input type="text" placeholder="search by names">
-        </span>
+        <form method="GET" action="/page/search">
+          <span style="margin: 10px; width: 180px; display: inline-block">
+            <input type="text" placeholder="search by title" name="search_box">
+          </span>
 
-        <span style="margin: 10px; width:200px; display: inline-block">
+          <span style="margin: 10px; width: 300px; display: inline-block">
+            <button type="submit">Go</button>
+          </span>
+        </form>
+        <div style="margin: 10px; width: 180px; display: inline-block">
+          {% for j in qs1 %}
+            <li><a href="{{ j.url }}" >{{ j.title }}</a></li>
+          {% endfor %}
+        </div>
+
+        <span style="margin: 10px; width:300px; display: inline-block">
           <a href="/page/addstory">Add A Story</a>
         </span>
 
@@ -18,36 +29,51 @@
         </span>
       </div>
       <div>
+        <script>
+          var count=1
+        </script>
         {% for i in qs %}
-          <div style="border: 1px solid black; height: 170px;">
-            <span style="margin: 10px; width: 300px; display: inline-block">
+          <script>
+           document.write(count)
+          </script>
+          <div style="border: 1px solid black; height: 250px;">
+            <span style="margin: 10px; width: 350px; display: inline-block">
+              <span style="color: brown">Title:</span>
               <a href="{{ i.url }}">{{ i.title }}</a>
             </span>
 
-            <span style="margin: 10px; width: 150px; display: inline-block">
+            <span style="margin: 10px; width: 700px; display: inline-block">
+              <span style="color: brown">Source Name: </span>
               {{ i.source.name }}
             </span>
 
-            <span style="margin: 10px; width: 150px; display: inline-block">
-              {{ i.company.values_list}}
+            <span style="margin: 5px; width: 350px; display: inline-block">
+              <span style="color: brown">Company Name:</span>
+              {% for j in i.company.all %}
+                {{ j.name }}
+              {% endfor %}
             </span>
 
-            <span style="margin: 10px; width: 150px; display: inline-block">
+            <span style="margin: 10px; width: 620px; display: inline-block">
+              <span style="color: brown">Published Date: </span>
               {{ i.pub_date }}
-
             </span>
 
-            <span style="margin: 10px; width: 600px; display: inline-block">
+            <span style="margin: 10px; width: 580px; display: inline-block">
+              <span style="color: brown">Body Text: </span>
               {{ i.body_text }}
             </span>
 
             <span style="margin: 30px; width: 150px; display: inline-block">
-              <a href="">Edit</a>
+              <a href="/page/edit_story/{{ i.id }}">Edit</a>
             </span>
 
             <span style="margin: 10px; width: 100px; display: inline-block" >
-              <a href="">Delete</a>
+              <a href="/page/delete_story/{{ i.id }}">Delete</a>
             </span>
+          <script>
+           count+=1
+        </script>
           </div>
         {% endfor %}
       </div>
