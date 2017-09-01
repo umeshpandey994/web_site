@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <title>EDIT STORY</title>
+    </head>
+    <body>
+        <h1>EDIT STORY</h1>
+        <form id="edit_story" method="post" >
+            {% csrf_token %}
+            <div>
+            <div>
+              <label>Title: </label>
+              <label>
+                <input type="text" name="title" value="{{ qs.title }}" size="20" required>
+              </label>
+            </div>
+
+            <div>
+              <label>URL: </label>
+              <label>
+                <input type="url" name="url" value="{{ qs.url }}" size="50" required>
+              </label>
+            </div>
+
+            <div>
+              <label>Source Name: </label>
+              <select name="source">
+                <option >{{ qs.source.name }}</option>
+                {% for source in source_qs %}
+                <option value="{{ source.id }}">{{ source.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div>
+              <label>Published Date: </label>
+              <label>
+                <input type="date" name="pub_date" value="{{ qs.pub_date }}" size="20" required>
+              </label>
+            </div>
+
+            <div>
+              <label>Companies: </label>
+              <select multiple="multiple" name="companies">
+                {% for company in company_qs %}
+                  <option value="{{ company.id }}">{{ company.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div>
+              <label>Body Text : </label>
+              <label>
+                <textarea cols="50" rows="4" name="body_text">{{ qs.body_text }}</textarea>
+              </label>
+            </div>
+
+            <div>
+              <label>
+                   <input type="submit" value="save">
+              </label>
+            </div>
+            </div>
+        </form>
+    </body>
+</html>
