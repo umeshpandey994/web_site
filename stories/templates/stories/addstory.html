@@ -15,7 +15,7 @@
 
             <div>
               <label>Source</label>
-              <select name="source">
+              <select name="source_id">
                 {% for source in source_qs %}
                   <option value="{{ source.id }}">{{ source.name }}</option>
                 {% endfor %}
@@ -45,7 +45,7 @@
 
             <div>
               <label>Companies</label>
-              <select multiple="multiple" name="companies">
+              <select multiple="multiple" name="companies_id">
                 {% for company in company_qs %}
                   <option value="{{ company.id }}">{{ company.name }}</option>
                 {% endfor %}

@@ -4,6 +4,14 @@
     </head>
     <body>
         <h1>ADD SOURCE</h1>
+        <div>
+          {% if name_error %}
+          <span style="color: red">{{ name_error }}</span>
+          {% endif %}
+          {% if url_error %}
+          <span style="color: red">{{ url_error }}</span>
+          {% endif %}
+        </div>
         <form id="add_source" method="post" >
             {% csrf_token %}
             <div>
@@ -23,7 +31,7 @@
             <div>
               <label>Compaines</label>
               <label>
-                <select name="companies" multiple="multiple">
+                <select name="companies" multiple="multiple" required>
                   <option value="">------------</option>
                   {% for i in qs %}
                     <option value="{{ i.id }}">{{ i.name }}</option>

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render,redirect
+from django.shortcuts import render
+from django.http import HttpResponse
 
 from subscribers.models import Company,Subscriber
 from sourcelisting.models import Source
@@ -11,33 +12,43 @@ from dateutil.parser import parse
 
 
 def addstory(request):
-    user_id = request.user.id
+    # user_id = request.user.id
+    # sub = Subscriber.objects.get(user_id=user_id)
+
+    company = Company.objects.filter(is_active=True)
+    source = Source.objects.filter(created_by=request.user)
+    story = Story.objects.filter(client_id=request.user.subscriber_user.client_id)
+
+
     cxt = {
-        'company_qs': Company.objects.all(),
-        'source_qs': Source.objects.filter(created_by=user_id),
+        'company_qs': company.values('name', 'id'),
+        'source_qs': source.values('name', 'id'),
+        'qs': story.values('title', 'pub_date', 'url', 'body_text',
+                           'company__name', 'source__name', 'id'),
+
     }
     if request.method == "POST":
         title = request.POST.get('title')
         pub_date = request.POST.get('pub_date')
         body_text = request.POST.get('body_text')
         url = request.POST.get('url')
-        companies = request.POST.getlist('companies')
-        # client = request.POST.get('client')
-        source = request.POST.get('source')
+        companies_id = request.POST.getlist('companies_id')
+        source_id = request.POST.get('source_id')
 
         s = Story()
         s.title = title
-        s.source_id = source
+        s.source_id = source_id
         s.pub_date = pub_date
         s.body_text = body_text
         s.url = url
-        client = Subscriber.objects.get(user_id= user_id)
-        s.client_id = client.client_id
+        # client = Subscriber.objects.get(user_id= user_id)
+        # s.client_id = client.client_id
+
+        s.client_id = request.user.subscriber_user.client_id
         s.save()
-        li = map(int, companies)
-        for company in li:
-            s.company.add(company)
-        return render(request, 'stories/showstories.html', )
+        li = map(int, companies_id)
+        s.company.add(*li)
+        return render(request, 'stories/showstories.html', cxt )
     else:
         return render(request, 'stories/addstory.html', cxt)
 
@@ -53,7 +64,7 @@ def edit_story(request, edit_id):
         url = request.POST['url']
         pub_date = request.POST['pub_date']
         body_text = request.POST['body_text']
-        source = request.POST['source']
+        source = request.POST.get('source')
         companies = request.POST.getlist('companies')
         cxt['qs'].title = title
         cxt['qs'].url = url
@@ -62,9 +73,13 @@ def edit_story(request, edit_id):
                                                         dt.day, dt.hour,
                                                         dt.minute, dt.second
                                                         )
-        cxt['qs'].body_text = body_text
         cxt['qs'].source_id = source
-        cxt['qs'].save()
+        cxt['qs'].body_text = body_text
+        try:
+            cxt['qs'].save()
+        except Exception as e:
+            raise ("DataBase Doesn't save data {}".format(e))
+
         for company in map(int, companies):
             cxt['qs'].company.add(company)
 
@@ -94,12 +109,26 @@ def delete_story(request, delete_id):
 def search(request):
     if request.method == "GET":
         search_text = request.GET['search_box']
-
-        sub = Subscriber.objects.get(user_id=request.user.id)
-        client = sub.client_id
+        search = Story.objects.filter(title=search_text)
+        story = Story.objects.filter(client=request.user.subscriber_user.client)
+        #cxt['qs1'].count()
         cxt = {
-            'qs1': Story.objects.filter(title=search_text),
-            'qs': Story.objects.filter(client=client)
+            'qs1': search.values('title', 'url'),
+            'qs': story.values('title', 'url', 'pub_date', 'body_text',
+                               'source__name', 'source__companies__name', 'id')
         }
-        cxt['qs1'].count()
         return render(request, "stories/showstories.html", cxt)
+
+
+def delete_company(request, delete_id, company_name):
+    cxt = {
+        'qs': Story.objects.get(id=delete_id),
+        'company_qs': Company.objects.all(),
+        'source_qs': Source.objects.filter(created_by=request.user.id)
+    }
+    qs2 = Story.objects.get(id=delete_id)
+    qs1 = qs2.company.get(name=company_name)
+    qs2.company.remove(qs1.id)
+    return render(request, "stories/edit.html", cxt)
+
+

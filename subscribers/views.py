@@ -77,20 +77,19 @@ def login_(request):
         password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user:
-            if user.is_active:
-                login(request, user)
-                #qs = Source.objects.filter(created_by=user.id)
-                sub = Subscriber.objects.get(user_id=user.id)
-                client = sub.client_id
-                qs = Story.objects.filter(client=client)
-                if qs.exists():
-                    return render(request, "stories/showstories.html",
-                                  {'qs': qs}
-                                  )
-                else:
-                    return HttpResponseRedirect("/page/add")
+            login(request, user)
+            if user.source_created.exists():
+                story = Story.objects.filter(client=user.subscriber_user.client
+                                             )
+                cxt = {
+                    'qs': story.values('title', 'url', 'pub_date', 'body_text',
+                                       'source__name',
+                                       'company__name', 'id'),
+                    }
+                return render(request, "stories/showstories.html", cxt)
             else:
-                return HttpResponse("User is inactive")
+                return HttpResponseRedirect("/page/add")
+
         else:
             cxt = {
                 'error': "Invalid UserName and Password "

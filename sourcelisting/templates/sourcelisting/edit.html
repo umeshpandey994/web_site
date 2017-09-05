@@ -4,6 +4,11 @@
     </head>
     <body>
         <h1>EDIT SOURCE</h1>
+        <div>
+           {% if error %}
+          <span style="color: red">{{ error }}</span>
+          {% endif %}
+        </div>
         <form id="add_source" method="post" >
             {% csrf_token %}
             <div>

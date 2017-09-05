@@ -40,7 +40,7 @@
 
             <div>
               <label>Companies: </label>
-              <select multiple="multiple" name="companies">
+              <select multiple="multiple" name="companies" required>
                 {% for company in company_qs %}
                   <option value="{{ company.id }}">{{ company.name }}</option>
                 {% endfor %}
@@ -50,7 +50,7 @@
             <div>
               <label>Body Text : </label>
               <label>
-                <textarea cols="50" rows="4" name="body_text">{{ qs.body_text }}</textarea>
+                <textarea cols="50" rows="4" name="body_text" required>{{ qs.body_text }}</textarea>
               </label>
             </div>
 
