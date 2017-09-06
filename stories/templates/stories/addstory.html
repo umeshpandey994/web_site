@@ -4,6 +4,14 @@
     </head>
     <body>
         <h1>ADD STORY</h1>
+        <div>
+          {% for error in title_error%}
+            {{ error }}
+          {% endfor %}
+          {% for error in url_error%}
+            {{ error }}
+          {% endfor %}
+        </div>
         <form id="add_story" method="post" >
             {% csrf_token %}
             <div>

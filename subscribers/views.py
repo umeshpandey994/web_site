@@ -81,12 +81,19 @@ def login_(request):
             if user.source_created.exists():
                 story = Story.objects.filter(client=user.subscriber_user.client
                                              )
-                cxt = {
-                    'qs': story.values('title', 'url', 'pub_date', 'body_text',
-                                       'source__name',
-                                       'company__name', 'id'),
-                    }
-                return render(request, "stories/showstories.html", cxt)
+                qs = []
+                for i in story:
+                    qs.append({'title': i.title, 'url': i.url,
+                               'pub_date': i.pub_date,
+                               'body_text': i.body_text, 'id': i.id,
+                               'company__name': i.company.all(),
+                               'source__name': i.source.name})
+                # cxt = {
+                #     'qs': story.values('title', 'url', 'pub_date', 'body_text',
+                #                        'source__name',
+                #                        'company__name', 'id'),
+                #     }
+                return render(request, "stories/showstories.html", {'qs': qs})
             else:
                 return HttpResponseRedirect("/page/add")
 

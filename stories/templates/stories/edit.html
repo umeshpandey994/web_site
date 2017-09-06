@@ -24,7 +24,7 @@
             <div>
               <label>Source Name: </label>
               <select name="source">
-                <option >{{ qs.source.name }}</option>
+                <option value="{{ qs.source_id }}">{{ qs.source.name }}</option>
                 {% for source in source_qs %}
                 <option value="{{ source.id }}">{{ source.name }}</option>
                 {% endfor %}
@@ -38,9 +38,16 @@
               </label>
             </div>
 
+             <div>
+            <label>Companies: </label>
+                {% for company in qs.company.all %}
+                    <label>{{ company.name }}</label>
+                    <label><a href="/page/delete_company/{{ qs.id }}/{{ company.name }}"> DEL </a></label>
+                {% endfor %}
+
+            </div>
             <div>
-              <label>Companies: </label>
-              <select multiple="multiple" name="companies" required>
+              <select multiple="multiple" name="companies_id">
                 {% for company in company_qs %}
                   <option value="{{ company.id }}">{{ company.name }}</option>
                 {% endfor %}

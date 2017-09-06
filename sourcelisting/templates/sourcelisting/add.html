@@ -31,7 +31,7 @@
             <div>
               <label>Compaines</label>
               <label>
-                <select name="companies" multiple="multiple" required>
+                <select name="companies_id" multiple="multiple" required>
                   <option value="">------------</option>
                   {% for i in qs %}
                     <option value="{{ i.id }}">{{ i.name }}</option>

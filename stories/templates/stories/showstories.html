@@ -49,8 +49,9 @@
 
             <span style="margin: 5px; width: 350px; display: inline-block">
               <span style="color: brown">Company Name:</span>
-                {{ i.company__company_name }}
-
+               {% for j in i.company__name %}
+                {{ j.name}}
+               {% endfor %}
             </span>
 
             <span style="margin: 10px; width: 620px; display: inline-block">

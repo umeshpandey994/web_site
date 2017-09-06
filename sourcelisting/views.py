@@ -39,7 +39,7 @@ def add_source(request):
             source.url = url
             source.created_by_id = request.user.id
             source.save()
-            li = map(int, companies_id)
+            li = list(map(int, companies_id))
             source.companies.add(*li)
             source = Source.objects.filter(created_by=request.user)
             cxt = {
@@ -49,7 +49,7 @@ def add_source(request):
     else:
         company = Company.objects.filter(is_active=True)
         cxt = {
-            'qs': company.values('name')
+            'qs': company.values('name', 'id')
         }
         return render(request, 'sourcelisting/add.html', cxt)
 
@@ -141,10 +141,11 @@ def fetch(id):
         s.url = entry.link
         s.title = entry.title
         dt = parse(str(entry.published))
-        s.pub_date = "{}-{}-{} {}:{}:{}".format(dt.year, dt.month,
-                                                dt.day, dt.hour,
-                                                dt.minute, dt.second
-                                                )
+        # s.pub_date = "{}-{}-{} {}:{}:{}".format(dt.year, dt.month,
+        #                                         dt.day, dt.hour,
+        #                                         dt.minute, dt.second
+        #                                         )
+        s.pub_date = dt
         s.body_text = filterdata(entry.summary)
         s.source_id = id
         s.client_id = source.created_by.subscriber_user.client_id
