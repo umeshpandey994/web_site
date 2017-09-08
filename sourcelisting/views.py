@@ -10,6 +10,10 @@ from sourcelisting.models import Source
 from subscribers.models import Company,Subscriber
 from stories.models import Story
 
+import requests
+from bs4 import BeautifulSoup
+from datetime import datetime
+
 
 import feedparser
 import re
@@ -157,3 +161,18 @@ def fetch(id):
             story_obj = Story.objects.get(id=s.id)
             story_obj.company.add(*list_companies)
 
+
+# def fetch(id):
+#     source = Source.objects.get(id=id)
+#     r = requests.get(source.url)
+#     html_doc = r.content
+#     soup = BeautifulSoup(html_doc, "html.parser")
+#     tag = soup.find_all('item')
+#     s = Story()
+#     for t in tag:
+#         s.url = t.get('href')
+#         s.title = t.string
+#         s.pub_date = datetime.now()
+#         s.source_id = id
+#         s.client_id = source.created_by.subscriber_user.client_id
+#         s.save()

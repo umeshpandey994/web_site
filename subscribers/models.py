@@ -25,7 +25,6 @@ class Subscriber(models.Model):
 
     company = models.ForeignKey(Company, related_name='company_name')
     client = models.ForeignKey(Company, related_name='client_name')
-    hobbies = models.CharField(max_length=100, null=True)
     created_on = models.DateTimeField(auto_now_add=True, null=True)
     updated_on = models.DateTimeField(auto_now=True, null=True)
 
