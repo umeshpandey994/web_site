@@ -15,6 +15,9 @@ class Company(models.Model):
     created_on = models.DateTimeField(auto_now_add=True, null=True)
     updated_on = models.DateTimeField(auto_now=True, null=True)
 
+    def __unicode__(self):
+        return self.name
+
 
 class Subscriber(models.Model):
     user = models.OneToOneField(User, related_name='subscriber_user')
@@ -28,4 +31,5 @@ class Subscriber(models.Model):
     created_on = models.DateTimeField(auto_now_add=True, null=True)
     updated_on = models.DateTimeField(auto_now=True, null=True)
 
-
+    def __unicode__(self):
+        return "{}".format(self.company.all())

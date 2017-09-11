@@ -162,17 +162,21 @@ def fetch(id):
             story_obj.company.add(*list_companies)
 
 
-# def fetch(id):
-#     source = Source.objects.get(id=id)
-#     r = requests.get(source.url)
-#     html_doc = r.content
-#     soup = BeautifulSoup(html_doc, "html.parser")
-#     tag = soup.find_all('item')
-#     s = Story()
-#     for t in tag:
-#         s.url = t.get('href')
-#         s.title = t.string
-#         s.pub_date = datetime.now()
-#         s.source_id = id
-#         s.client_id = source.created_by.subscriber_user.client_id
-#         s.save()
+def fetch(id):
+    source = Source.objects.get(id=id)
+    r = requests.get(source.url)
+    xml_doc = r.content
+    soup = BeautifulSoup(xml_doc, "xml")
+
+    for t in soup.find_all('item'):
+        s = Story()
+        s.url = t.find('link').string
+        s.title = t.find('title').string
+        s.pub_date = parse(t.find('pubDate').string)
+        s.body_text = filterdata(t.find('description').string)
+        s.source_id = id
+        s.client_id = source.created_by.subscriber_user.client_id
+        s.save()
+        list_companies = source.companies.values_list('id', flat=True)
+        story_obj = Story.objects.get(id=s.id)
+        story_obj.company.add(*list_companies)
