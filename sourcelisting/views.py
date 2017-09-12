@@ -133,50 +133,53 @@ def fetchall(request):
             'qs': source.values('name', 'url', 'id')
         }
         for i in source:
-            fetch(i.id)
+            fetchstory(i.id)
         return render(request, 'sourcelisting/listing.html', cxt)
 
 
-def fetch(id):
+def fetchstory(id):
     source = Source.objects.get(id=id)
     f = feedparser.parse(source.url)
     for entry in f.entries:
-        s = Story()
-        s.url = entry.link
-        s.title = entry.title
-        dt = parse(str(entry.published))
-        # s.pub_date = "{}-{}-{} {}:{}:{}".format(dt.year, dt.month,
-        #                                         dt.day, dt.hour,
-        #                                         dt.minute, dt.second
-        #                                         )
-        s.pub_date = dt
-        s.body_text = filterdata(entry.summary)
-        s.source_id = id
-        s.client_id = source.created_by.subscriber_user.client_id
-        if Story.objects.filter(url__exact=s.url, source=id).exists():
+        if Story.objects.filter(url__exact=entry.link, source=id).exists():
             pass
         else:
+            s = Story()
+            s.url = entry.link
+            s.title = entry.title
+            dt = parse(str(entry.published))
+            s.pub_date = dt
+            s.body_text = filterdata(entry.summary)
+            s.source_id = id
+            s.client_id = source.created_by.subscriber_user.client_id
             s.save()
             list_companies = source.companies.values_list('id', flat=True)
             story_obj = Story.objects.get(id=s.id)
             story_obj.company.add(*list_companies)
 
 
-def fetch(id):
-    source = Source.objects.get(id=id)
-    r = requests.get(source.url)
-    xml_doc = r.content
-    soup = BeautifulSoup(xml_doc, "xml")
-
-    for t in soup.find_all('item'):
-        s = Story()
-        s.url = t.find('link').string
-        s.title = t.find('title').string
-        s.pub_date = parse(t.find('pubDate').string)
-        s.body_text = filterdata(t.find('description').string)
-        s.source_id = id
-        s.client_id = source.created_by.subscriber_user.client_id
-        s.save()
-        list_companies = source.companies.values_list('id', flat=True)
-        story_obj = Story.objects.get(id=s.id)
-        story_obj.company.add(*list_companies)
+# def fetchstory(id):
+#     source = Source.objects.get(id=id)
+#     r = requests.get(source.url)
+#     xml_doc = r.content
+#     soup = BeautifulSoup(xml_doc, "xml")
+#
+#     for t in soup.find_all('item'):
+#         if Story.objects.filter(url__exact=t.find('link').string,
+#                                 source=id).exists():
+#             pass
+#         else:
+#             s = Story()
+#             s.url = t.find('link').string
+#             s.title = t.find('title').string
+#             if t.find('pubDate') is not None:
+#                 s.pub_date = parse(t.find('pubDate').string)
+#             else:
+#                 s.pub_date = datetime.now()
+#             s.body_text = filterdata(t.find('description').string)
+#             s.source_id = id
+#             s.client_id = source.created_by.subscriber_user.client_id
+#             s.save()
+#             list_companies = source.companies.values_list('id', flat=True)
+#             story_obj = Story.objects.get(id=s.id)
+#             story_obj.company.add(*list_companies)
