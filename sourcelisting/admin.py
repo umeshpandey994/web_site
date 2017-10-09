@@ -12,7 +12,8 @@ class CompaniesInLine(admin.TabularInline):
 
 
 class SourceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'url', 'created_by', 'updated_by')
+    template = "admin/sourcelisting/source/change_list.html"
+    list_display = ('name', 'test_popup', 'aid_link', 'url', 'created_by', 'updated_by')
     save_on_top = True
     fieldsets = (
         ('group1',{
@@ -25,6 +26,7 @@ class SourceAdmin(admin.ModelAdmin):
             'fields': ('created_by', 'updated_by')
         })
     )
+    #raw_id_fields = ('source',)
     inlines = [CompaniesInLine]
 
 admin.site.register(Source, SourceAdmin)
