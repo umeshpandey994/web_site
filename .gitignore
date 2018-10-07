@@ -1,0 +1,33 @@
+*.pyc
+*.mo
+logs/*
+.idea
+env
+dist
+classified_data/*
+local_settings.py
+contify.iml
+.ropeproject
+.s3_sync_auth
+.s3_sync_live_cache
+.s3_sync_local_cache
+.tmp
+.sass-cache
+.directory
+tldextract_cache
+media/client_data/
+sphinx-documentation/_build/
+
+node_modules
+
+# testing
+coverage
+
+# production
+build
+
+# misc
+.DS_Store
+.env
+npm-debug.log
+
